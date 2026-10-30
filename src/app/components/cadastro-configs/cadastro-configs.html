@@ -1,0 +1,42 @@
+<div class="container-fluid text-center" style="width: 30rem;">
+    <!-- @if (emEdicao) {
+    <h1>Editando desenvolvedora nº {{ devID }}</h1>
+  } @else {
+    <h1>Nova desenvolvedora</h1>
+  }-->
+    <h1>Nova Configuração</h1>
+    <form [formGroup]="formConfig" (ngSubmit)="salvar()">
+        <div class="mb-3">
+            <label for="orcamento" class="form-label">Informe seu Orçamento:</label>
+            <input type="text" class="form-control" id="orcamento" formControlName="orcamento" />
+
+            <label for="orcamento">
+                @if (formConfig.get('orcamento')!.invalid && formConfig.get('orcamento')!.touched) {
+                <span style="color: red; font-size: 0.7rem">Campo obrigatório</span>
+                }
+            </label>
+        </div>
+
+        <div class="mb-3">
+            <label for="finalidade" class="form-label">Finalidade:</label>
+            <input type="text" class="form-control" id="finalidade" formControlName="finalidade" />
+
+            <label for="finalidade">
+                @if (formConfig.get('finalidade')!.invalid && formConfig.get('finalidade')!.touched) {
+                <span style="color: red; font-size: 0.7rem">Campo obrigatório</span>
+                }
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="formConfig.invalid">Salvar</button>
+
+
+
+        <!--
+    @if (emEdicao) {
+      <button type="submit" class="btn btn-primary" [disabled]="formDev.invalid">Salvar</button>
+    } @else {
+      <button type="submit" class="btn btn-primary" [disabled]="formDev.invalid">Cadastrar</button>
+    }-->
+    </form>
+</div>
