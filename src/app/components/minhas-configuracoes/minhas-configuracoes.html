@@ -1,26 +1,54 @@
-<div class="container-fluid d-flex justify-content-center">
-    <div class="mx-2 my-2" style="width: 30rem;">
-        <div>
-            @for(configuracao of configService.configs(); track configuracao.id){
+<div class="container-fluid ">
+    <div class="d-flex justify-content-center">
+        <div class="mx-2 my-2">
 
-            <div class="card text-center mb-2">
-                <div class="card-header">
-                    Configuração {{configuracao.id}}
+            <div>
+                @for(configuracao of configService.configs(); track configuracao.id){
+
+                <div class="card text-center mb-2" style="width: 30rem;">
+
+                    <div class="card-header">
+                        <div class="container">
+
+                            <div class=" d-flex justify-content-center align-items-center">
+                                {{configuracao.nome}}
+
+                                <div class="d-flex justify-content-end align-items-center ms-auto">
+                                    <a class="btn btn-sm btn-primary ms-1"
+                                        [routerLink]="['/configuracoes', configuracao.id, 'editar']">Editar</a>
+
+                                    <a class="btn btn-sm btn-danger ms-1"
+                                        (click)="removerConfig(configuracao)">Remover</a>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">Orçamento: R$ {{ configuracao.orcamento}}</h5>
+                        <p class="card-text">{{ configuracao.finalidade}}</p>
+                    </div>
+                    <div class="card-footer text-muted">
+                        {{configuracao.dataCriacao}}
+                    </div>
+
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title">Orçamento: R$ {{ configuracao.orcamento}}</h5>
-                    <p class="card-text">{{ configuracao.finalidade}}</p>
-                    <!-- <a href="#" class="btn btn-primary">Go somewhere</a>-->
-                </div>
-                <div class="card-footer text-muted">
-                    {{configuracao.dataCriacao}}
-                </div>
+
+                }@empty {
+                <p>Nenhuma configuração cadastrada</p>
+
+
+
+                }
+
+
             </div>
-
-            }@empty {
-            <p>Nenhuma configuração cadastrada</p>
-            }
-
         </div>
     </div>
 

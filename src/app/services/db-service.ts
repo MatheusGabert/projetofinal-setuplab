@@ -12,7 +12,7 @@ export class DbService extends Dexie{
     constructor(){
         super("SetupLabDB");
         this.version(1).stores({
-            configs: "id++, orcamento, finalidade, dataCriacao",
+            configs: "id++, nome, orcamento, finalidade, dataCriacao",
             peças: "id++, nome, categoria, marca, preco, comprado, configuracaoId"
         });
     }
