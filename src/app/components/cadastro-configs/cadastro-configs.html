@@ -1,42 +1,47 @@
 <div class="container-fluid text-center" style="width: 30rem;">
-    <!-- @if (emEdicao) {
-    <h1>Editando desenvolvedora nº {{ devID }}</h1>
-  } @else {
-    <h1>Nova desenvolvedora</h1>
-  }-->
-    <h1>Nova Configuração</h1>
-    <form [formGroup]="formConfig" (ngSubmit)="salvar()">
-        <div class="mb-3">
-            <label for="orcamento" class="form-label">Informe seu Orçamento:</label>
-            <input type="text" class="form-control" id="orcamento" formControlName="orcamento" />
+  <h2>
+    @if (emEdicao) { Editar configuração } @else { Cadastrar configuração }
+  </h2>
 
-            <label for="orcamento">
-                @if (formConfig.get('orcamento')!.invalid && formConfig.get('orcamento')!.touched) {
-                <span style="color: red; font-size: 0.7rem">Campo obrigatório</span>
-                }
-            </label>
-        </div>
+  <form [formGroup]="formConfig" (ngSubmit)="salvar()">
 
-        <div class="mb-3">
-            <label for="finalidade" class="form-label">Finalidade:</label>
-            <input type="text" class="form-control" id="finalidade" formControlName="finalidade" />
+     <div class="mb-3">
+      <label for="nome" class="form-label">Nome:</label>
+      <input type="text" class="form-control" id="nome" formControlName="nome" />
 
-            <label for="finalidade">
-                @if (formConfig.get('finalidade')!.invalid && formConfig.get('finalidade')!.touched) {
-                <span style="color: red; font-size: 0.7rem">Campo obrigatório</span>
-                }
-            </label>
-        </div>
+      <label for="nome">
+        @if (formConfig.get('nome')!.invalid && formConfig.get('nome')!.touched) {
+        <span style="color: red; font-size: 0.7rem">Campo obrigatório</span>
+        }
+      </label>
+    </div>
 
-        <button type="submit" class="btn btn-primary" [disabled]="formConfig.invalid">Salvar</button>
+    <div class="mb-3">
+      <label for="orcamento" class="form-label">Informe seu Orçamento:</label>
+      <input type="text" class="form-control" id="orcamento" formControlName="orcamento" />
 
+      <label for="orcamento">
+        @if (formConfig.get('orcamento')!.invalid && formConfig.get('orcamento')!.touched) {
+        <span style="color: red; font-size: 0.7rem">Campo obrigatório</span>
+        }
+      </label>
+    </div>
 
+    <div class="mb-3">
+      <label for="finalidade" class="form-label">Finalidade:</label>
+      <input type="text" class="form-control" id="finalidade" formControlName="finalidade" />
 
-        <!--
-    @if (emEdicao) {
-      <button type="submit" class="btn btn-primary" [disabled]="formDev.invalid">Salvar</button>
-    } @else {
-      <button type="submit" class="btn btn-primary" [disabled]="formDev.invalid">Cadastrar</button>
-    }-->
-    </form>
+      <label for="finalidade">
+        @if (formConfig.get('finalidade')!.invalid && formConfig.get('finalidade')!.touched) {
+        <span style="color: red; font-size: 0.7rem">Campo obrigatório</span>
+        }
+      </label>
+    </div>
+
+    <button [disabled]="formConfig.invalid" type="submit" class="btn btn-primary">
+      @if (emEdicao) { Salvar alterações
+      } @else { Cadastrar }
+    </button>
+
+  </form>
 </div>
