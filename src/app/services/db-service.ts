@@ -7,13 +7,13 @@ import { Componentes } from '../models/componentes-model';
 @Service()
 export class DbService extends Dexie{
     configs!: Table<Configuracao, number>;
-    peças!: Table<Componentes, number>;
+    comps!: Table<Componentes, number>;
 
     constructor(){
         super("SetupLabDB");
         this.version(1).stores({
             configs: "id++, nome, orcamento, finalidade, dataCriacao",
-            peças: "id++, nome, categoria, marca, preco, comprado, configuracaoId"
+            comps: "id++, nome, categoria, marca, preco, comprado, configuracaoId"
         });
     }
 }

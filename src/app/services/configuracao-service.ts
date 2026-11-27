@@ -29,17 +29,17 @@ export class ConfiguracaoService {
 
   atualizarConfig(id: number, nome: string, orcamento: number, finalidade: string) {
     return this.dbService.configs
-        .update(id, { nome: nome, orcamento: orcamento, finalidade: finalidade })
-        .then(() => this.dbService.configs.toArray())
-        .then(configs => this.configsSignal.set(configs))
-}
+      .update(id, { nome: nome, orcamento: orcamento, finalidade: finalidade })
+      .then(() => this.dbService.configs.toArray())
+      .then(configs => this.configsSignal.set(configs))
+  }
 
-removerConfig(id: number) {
- return this.dbService.configs.delete(id).then(() => {
- this.configsSignal.update(configs =>
- configs.filter(config => config.id !== id));
- });
-}
+  removerConfig(id: number) {
+    return this.dbService.configs.delete(id).then(() => {
+      this.configsSignal.update(configs =>
+        configs.filter(config => config.id !== id));
+    });
+  }
 
 
 
