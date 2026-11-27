@@ -1,1 +1,23 @@
-/* You can add global styles to this file, and also import other style files */
+.check-comprado {
+  cursor: pointer;
+  width: 17px;
+  height: 17px;
+}
+
+.check-comprado:checked {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.check-comprado:focus {
+  box-shadow: none;
+}
+
+.form-check-label {
+  cursor: pointer;
+  color: #6c757d;
+}
+
+.check-comprado:checked + .form-check-label {
+  color: #198754;
+}
