@@ -1,54 +1,199 @@
-<div class="container-fluid ">
-    <div class="d-flex justify-content-center">
-        <div class="mx-2 my-2">
+<div class="container-fluid my-3">
+  <div class="row g-3 justify-content-center">
+    @for (configuracao of configService.configs(); track configuracao.id) {
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="card text-center">
+          <div class="card-header">
+            <div class="container">
+              <div class="d-flex justify-content-center align-items-center">
+                {{ configuracao.nome }}
 
-            <div>
-                @for(configuracao of configService.configs(); track configuracao.id){
+                <div class="d-flex justify-content-end align-items-center ms-auto">
+                  <button
+                    class="btn btn-sm btn-primary ms-1"
+                    [routerLink]="['/configuracoes', configuracao.id, 'editar']"
+                  >
+                    Editar
+                  </button>
 
-                <div class="card text-center mb-2" style="width: 30rem;">
+                  <button class="btn btn-sm btn-danger ms-1" (click)="removerConfig(configuracao)">
+                    Remover
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
 
-                    <div class="card-header">
-                        <div class="container">
+          <div class="card-body">
+            <h5 class="card-title">Orçamento: R$ {{ configuracao.orcamento }}</h5>
 
-                            <div class=" d-flex justify-content-center align-items-center">
-                                {{configuracao.nome}}
+            <p class="card-text">{{ configuracao.finalidade }}</p>
 
-                                <div class="d-flex justify-content-end align-items-center ms-auto">
-                                    <a class="btn btn-sm btn-primary ms-1"
-                                        [routerLink]="['/configuracoes', configuracao.id, 'editar']">Editar</a>
-
-                                    <a class="btn btn-sm btn-danger ms-1"
-                                        (click)="removerConfig(configuracao)">Remover</a>
-                                </div>
-
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="card-body">
-                        <h5 class="card-title">Orçamento: R$ {{ configuracao.orcamento}}</h5>
-                        <p class="card-text">{{ configuracao.finalidade}}</p>
-
-                       <!--Aqui eu preciso pegar o ID da configuração e fazer com que apareça na tela inicial os componentes que estão cadastrados na configuração, então preciso de uma função que me retorne os componentes de acordo com o ID da configuração.-->    
-
-                    </div>
-
-                    <div class="card-footer text-muted">
-                        {{configuracao.dataCriacao}}
-                    </div>
-
+            @for (componente of buscarComponentes(configuracao.id!); track componente.id) {
+              <div class="border-bottom py-2">
+                <div class="d-flex justify-content-start mb-1">
+                  <span>
+                    <strong>{{ componente.categoria }}</strong>
+                  </span>
                 </div>
 
-                }@empty {
-                <p>Nenhuma configuração cadastrada</p>
-                }
-            </div>
-        </div>
-    </div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-secondary">{{ componente.marca }}</span>
+                    <span>{{ componente.nome }}</span>
+                  </div>
 
+                  <div class="d-flex align-items-center">
+                    <div class="text-end">
+                      <span class="me-2">R$ {{ componente.preco }}</span>
+
+                      <div class="form-check d-flex justify-content-end align-items-center mt-1">
+                        <input
+                          class="form-check-input check-comprado"
+                          type="checkbox"
+                          [checked]="componente.comprado"
+                          (change)="marcarComprado(componente)"
+                          [id]="'comprado-' + componente.id"
+                        />
+
+                        <label
+                          class="form-check-label small ms-1"
+                          [for]="'comprado-' + componente.id"
+                        >
+                          {{ componente.comprado ? 'Comprado' : 'Pendente' }}
+                        </label>
+                      </div>
+                    </div>
+
+                    <div class="btn-group ms-4">
+                      <button
+                        class="btn btn-sm btn-primary"
+                        (click)="editarComp(componente)"
+                        data-bs-toggle="modal"
+                        data-bs-target="#adicionarComponenteModal"
+                      >
+                        Editar
+                      </button>
+
+                      <button class="btn btn-sm btn-danger ms-1" (click)="removerComp(componente)">
+                        Remover
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            } @empty {
+              <p class="text-muted">Nenhum componente cadastrado.</p>
+            }
+          </div>
+
+          <div class="card-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="
+                idCompEditando = null;
+                formComp.get('categoria')?.enable();
+                configSelecionada = configuracao.nome;
+                formComp.reset({
+                  configuracaoId: configuracao.id,
+                  comprado: false,
+                  preco: 0,
+                })
+              "
+              data-bs-toggle="modal"
+              data-bs-target="#adicionarComponenteModal"
+            >
+              Adicionar Componente
+            </button>
+          </div>
+
+          <div class="card-footer text-muted">
+            {{ configuracao.dataCriacao }}
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="col-12">
+        <p>Nenhuma configuração cadastrada</p>
+      </div>
+    }
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="adicionarComponenteModal"
+  tabindex="-1"
+  aria-labelledby="adicionarComponenteModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="adicionarComponenteModalLabel">
+          {{ idCompEditando !== null ? 'Editar Componente' : 'Adicionar Componente' }}
+        </h1>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div class="container">
+          <div class="mx-auto">
+            <form [formGroup]="formComp" (ngSubmit)="cadastrarComp()" class="row g-2 mb-4">
+              <div class="mb-3">
+                <label for="nome" class="form-label"> Nome do componente: </label>
+                <input type="text" class="form-control" id="nome" formControlName="nome" />
+              </div>
+
+              <div class="mb-3">
+                <label for="categoria" class="form-label">Categoria</label>
+                <select
+                  class="form-select"
+                  id="categoria"
+                  formControlName="categoria"
+                  [disabled]="idCompEditando !== null"
+                >
+                  <option [ngValue]="null">Selecione uma categoria</option>
+
+                  @for (categoria of categoria; track categoria) {
+                    <option [ngValue]="categoria">{{ categoria }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label for="marca" class="form-label">Marca:</label>
+                <input type="text" class="form-control" id="marca" formControlName="marca" />
+              </div>
+
+              <div class="mb-3">
+                <label for="preco" class="form-label">Preço:</label>
+                <input type="number" class="form-control" id="preco" formControlName="preco" />
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label">Configuração selecionada:</label>
+                <input type="text" class="form-control" [value]="configSelecionada" readonly />
+              </div>
+
+              <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary" [disabled]="formComp.invalid">
+                  {{ idCompEditando !== null ? 'Salvar alterações' : 'Cadastrar' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="fecharModal" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

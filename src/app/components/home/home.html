@@ -1,9 +1,113 @@
-<div class="container-fluid">   
 
-    <div>
-      
-        <app-minhas-configuracoes></app-minhas-configuracoes>
+<div class="container-fluid my-4">
 
+  <h2 class="mb-4">Visão Geral</h2>
+
+  <!-- Indicadores gerais -->
+  <div class="row g-3">
+
+    <div class="col-12 col-md-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h6 class="text-muted">Configurações cadastradas</h6>
+          <h2>{{ totalConfiguracoes() }}</h2>
+        </div>
+      </div>
     </div>
+
+    <div class="col-12 col-md-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h6 class="text-muted">Total investido</h6>
+          <h2>R$ {{ totalInvestido() }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-4">
+      <div class="card text-center h-100">
+        <div class="card-body">
+          <h6 class="text-muted">Orçamento restante</h6>
+          <h2>R$ {{ orcamentoRestante() }}</h2>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Resumo por configuração -->
+  <h3 class="mt-5 mb-3">Minhas montagens</h3>
+
+  <div class="row g-3">
+
+    @for (configuracao of configService.configs(); track configuracao.id) {
+
+      <div class="col-12 col-md-6 col-xl-4">
+
+        <div class="card h-100">
+
+          <div class="card-header">
+            <h5 class="mb-0">{{ configuracao.nome }}</h5>
+          </div>
+
+          <div class="card-body">
+
+            <p class="mb-2">
+              <strong>Orçamento:</strong>
+              R$ {{ configuracao.orcamento }}
+            </p>
+
+            <p class="mb-2">
+              <strong>Investido:</strong>
+              R$ {{ totalInvestidoConfig(configuracao.id!) }}
+            </p>
+
+            <p class="mb-2">
+              <strong>Disponível:</strong>
+              R$ {{ orcamentoRestanteConfig(configuracao.orcamento, configuracao.id!) }}
+            </p>
+
+            <hr>
+
+            <div class="d-flex justify-content-between mb-2">
+              <strong>Progresso da montagem</strong>
+              <strong>{{ progressoCompras(configuracao.id!) }}%</strong>
+            </div>
+
+            <div class="progress mb-3" style="height: 10px;">
+              <div
+                class="progress-bar bg-success"
+                role="progressbar"
+                [style.width.%]="progressoCompras(configuracao.id!)"
+              ></div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <span class="text-success">
+                Comprados: {{ componentesComprados(configuracao.id!) }}
+              </span>
+
+              <span class="text-secondary">
+                Pendentes: {{ componentesPendentes(configuracao.id!) }}
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    } @empty {
+
+      <div class="col-12">
+        <div class="alert alert-secondary">
+          Nenhuma configuração cadastrada.
+        </div>
+      </div>
+
+    }
+
+  </div>
 
 </div>
