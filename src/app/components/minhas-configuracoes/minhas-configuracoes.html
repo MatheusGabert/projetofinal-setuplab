@@ -33,7 +33,11 @@
                     <div class="card-body">
                         <h5 class="card-title">Orçamento: R$ {{ configuracao.orcamento}}</h5>
                         <p class="card-text">{{ configuracao.finalidade}}</p>
+
+                       <!--Aqui eu preciso pegar o ID da configuração e fazer com que apareça na tela inicial os componentes que estão cadastrados na configuração, então preciso de uma função que me retorne os componentes de acordo com o ID da configuração.-->    
+
                     </div>
+
                     <div class="card-footer text-muted">
                         {{configuracao.dataCriacao}}
                     </div>
@@ -42,12 +46,7 @@
 
                 }@empty {
                 <p>Nenhuma configuração cadastrada</p>
-
-
-
                 }
-
-
             </div>
         </div>
     </div>

@@ -3,6 +3,8 @@ import { ConfiguracaoService } from '../../services/configuracao-service';
 import { RouterLink } from '@angular/router';
 import { Configuracao } from '../../models/configuracao-model';
 import Swal from 'sweetalert2';
+import { ComponentesService } from '../../services/componentes-service';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   imports: [RouterLink],
@@ -13,6 +15,7 @@ import Swal from 'sweetalert2';
 export class MinhasConfiguracoes {
 
   configService = inject(ConfiguracaoService);
+  compService = inject(ComponentesService);
 
   removerConfig(config: Configuracao) {
     Swal.fire({
